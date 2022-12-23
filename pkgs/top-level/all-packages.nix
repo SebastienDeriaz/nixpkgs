@@ -18148,6 +18148,8 @@ with pkgs;
 
   stm32cubemx = callPackage ../development/embedded/stm32/stm32cubemx { };
 
+  stm32cubeprog = callPackage ../development/embedded/stm32/stm32cubeprog { };
+
   stm32flash = callPackage ../development/embedded/stm32/stm32flash { };
 
   stm8flash = callPackage ../development/embedded/stm8/stm8flash { };
