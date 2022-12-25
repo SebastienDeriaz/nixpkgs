@@ -1,0 +1,74 @@
+# Heavily inspired by https://aur.archlinux.org/packages/stm32cubeprog
+# Edited by https://github.com/SebastienDeriaz
+# On 25.12.2022
+
+
+# Wait for STM32CubeProg Window Open
+sleep 5
+
+# Click Next
+search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync
+mousemove 1456 992 click 1 
+
+# Click Next
+search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync 
+mousemove 1456 992 click 1 
+
+# Accept License agreement
+search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync 
+mousemove 1122 912 click 1 
+
+# Click Next
+search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync 
+mousemove 1456 992 click  1 
+
+# Accept Terms of Use
+search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync 
+mousemove 1122 662 click 1
+
+# Click next
+search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync 
+mousemove 1456 992 click  1
+
+# Set Path of Installation
+search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus -sync 
+# Open "browse"
+mousemove 1534 682 click 1
+# input the path of pkgdir
+type $1
+# Click save
+mousemove 1472 846 click 1
+
+# Click Next
+search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync 
+mousemove 1456 992 click  1
+
+# Click Next
+search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync 
+mousemove 1456 992 click  1
+
+# Installation, wait (not sure about the timing)
+sleep 20
+
+
+# Click Next
+search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync 
+mousemove 1456 992 click  1 
+
+# Cancel Create shortcuts in the Start-Menu
+search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync 
+#mousemove 1181 683 click  1 
+mousemove 1164 701 click 1
+
+# Cancel Create additional shortcus on the desktop
+search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync 
+#mousemove 1181 705 click  1 
+mousemove 1163 727 click 1
+
+# Click Next
+search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync 
+mousemove 1456 992 click  1 
+
+# Click Done
+search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync 
+mousemove 1542 989 click  1 

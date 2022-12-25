@@ -1,10 +1,11 @@
-{ lib, stdenv, makeDesktopItem, copyDesktopItems, icoutils, fdupes, imagemagick, jdk11, fetchzip }:
+{ lib, stdenv, makeDesktopItem, copyDesktopItems, icoutils, fdupes, imagemagick, jdk11, fetchzip, xdotool}:
 
 # Heavily inspired by https://github.com/NixOS/nixpkgs/blob/nixos-22.11/pkgs/development/embedded/stm32/stm32cubemx/default.nix
 
 stdenv.mkDerivation rec {
   pname = "stm32cubeprog";
   version = "2.12.0";
+  xdotool_script = ./stm32cubeprog.xdotool;
 
   src = fetchzip {
     url = "https://www.st.com/content/ccc/resource/technical/software/utility/group0/2c/71/de/d9/d5/2f/4f/4c/stm32cubeprg-lin-v2-12-0/files/stm32cubeprg-lin-v2-12-0.zip/jcr:content/translations/en.stm32cubeprg-lin-v2-12-0.zip";
@@ -12,7 +13,7 @@ stdenv.mkDerivation rec {
     stripRoot = false;
   };
 
-  nativeBuildInputs = [ icoutils fdupes imagemagick copyDesktopItems ];
+  nativeBuildInputs = [ icoutils fdupes imagemagick copyDesktopItems xdotool];
   desktopItems = [
     (makeDesktopItem {
       name = "stm32CubeProgrammer";
@@ -24,9 +25,21 @@ stdenv.mkDerivation rec {
     })
   ];
 
+
   buildCommand = let iconame = "STM32CubeProgrammer"; in
     ''
       ls $src -la
+      # Start the linux installer
+      echo $src/SetupSTM32CubeProgrammer-2.12.0.linux
+      $src/SetupSTM32CubeProgrammer-2.12.0.linux &
+
+      export DISPLAY=:0
+      # specify $srcdir/build as temporary dir
+      echo "Running xdotool"
+      xdotool ${xdotool_script} $out
+
+      ls $out -la
+      
       # mkdir -p $out/{bin,opt/STM32CubeProgrammer}
       # cp -r $src/MX/. $out/opt/STM32CubeProgrammer/
       # chmod +rx $out/opt/STM32CubeProgrammer/STM32CubeProgrammer
