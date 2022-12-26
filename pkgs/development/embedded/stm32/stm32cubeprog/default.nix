@@ -12,7 +12,8 @@ stdenv.mkDerivation rec {
 
   src = fetchzip {
     url = "https://www.st.com/content/ccc/resource/technical/software/utility/group0/2c/71/de/d9/d5/2f/4f/4c/stm32cubeprg-lin-v2-12-0/files/stm32cubeprg-lin-v2-12-0.zip/jcr:content/translations/en.stm32cubeprg-lin-v2-12-0.zip";
-    sha256 = "sha256-iS0dhrwCWBG2oOcYLgPosXuHCLOx1AIhQPXp4N2C/xI=";
+    #sha256 = "sha256-iS0dhrwCWBG2oOcYLgPosXuHCLOx1AIhQPXp4N2C/xI=";
+    sha256 = "sha256-abcdhrwCWBG2oOcYLgPosXuHCLOx1AIhQPXp4N2C/xI=";
     stripRoot = false;
   };
 
