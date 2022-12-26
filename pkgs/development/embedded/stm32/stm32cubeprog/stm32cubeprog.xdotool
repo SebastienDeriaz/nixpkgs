@@ -4,6 +4,7 @@
 
 
 # Wait for STM32CubeProg Window Open
+exec echo "Starting xdotool script"
 sleep 5
 
 # Click Next

@@ -1,4 +1,4 @@
-{ lib, stdenv, makeDesktopItem, copyDesktopItems, icoutils, fdupes, imagemagick, jdk11, fetchzip, xdotool}:
+{ lib, stdenv, makeDesktopItem, copyDesktopItems, icoutils, fdupes, imagemagick, jdk11, fetchzip, xdotool, pkgs ? import <nixpkgs> {}}:
 
 # Heavily inspired by https://github.com/NixOS/nixpkgs/blob/nixos-22.11/pkgs/development/embedded/stm32/stm32cubemx/default.nix
 
@@ -6,6 +6,11 @@ stdenv.mkDerivation rec {
   pname = "stm32cubeprog";
   version = "2.12.0";
   xdotool_script = ./stm32cubeprog.xdotool;
+  xvfb_script    = ./stm32cubeprog.xvfb
+
+  #nodes.machine = { pkgs, ... }: {                                            
+  #  environment.systemPackages = [ pkgs.hello ];
+  #};
 
   src = fetchzip {
     url = "https://www.st.com/content/ccc/resource/technical/software/utility/group0/2c/71/de/d9/d5/2f/4f/4c/stm32cubeprg-lin-v2-12-0/files/stm32cubeprg-lin-v2-12-0.zip/jcr:content/translations/en.stm32cubeprg-lin-v2-12-0.zip";
@@ -25,8 +30,17 @@ stdenv.mkDerivation rec {
     })
   ];
 
+  #machine.console.keyMap = mkOverride 900 layout;
+  #machine.services.xserver.desktopManager.xterm.enable = false;
+  #machine.services.xserver.layout = mkOverride 900 layout;
+  #machine.imports = [ ./common/x11.nix ];
 
-  buildCommand = let iconame = "STM32CubeProgrammer"; in
+  
+
+  buildCommand = let
+    iconame = "STM32CubeProgrammer";
+      
+    in
     ''
       ls $src -la
       # Start the linux installer
@@ -36,9 +50,21 @@ stdenv.mkDerivation rec {
       export DISPLAY=:0
       # specify $srcdir/build as temporary dir
       echo "Running xdotool"
-      xdotool ${xdotool_script} $out
+      echo "Saving in " $out
 
-      ls $out -la
+      # xdotool ${xdotool_script} $out
+      xdotool --help # key --delay 100 p r e f e r e n c e s
+
+      echo "A"
+
+      mkdir -p $out/bin
+      touch $out/bin/test
+
+      echo "B"
+
+      # ls $out -la
+
+      echo "C"
       
       # mkdir -p $out/{bin,opt/STM32CubeProgrammer}
       # cp -r $src/MX/. $out/opt/STM32CubeProgrammer/

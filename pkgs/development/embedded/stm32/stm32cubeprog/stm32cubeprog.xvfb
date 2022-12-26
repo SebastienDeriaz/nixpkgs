@@ -1,0 +1,10 @@
+#!/usr/bin/sh
+
+echo ' '
+echo 'please wait for minutes ......'
+echo ' '
+
+./SetupSTM32CubeProgrammer-${pkgver}.linux &
+
+# specify $srcdir/build as temporary dir
+xdotool stm32cubeprog.xdotool ${srcdir}/build
