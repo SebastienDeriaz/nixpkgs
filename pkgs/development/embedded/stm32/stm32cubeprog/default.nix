@@ -12,8 +12,7 @@ stdenv.mkDerivation rec {
 
   src = fetchzip {
     url = "https://www.st.com/content/ccc/resource/technical/software/utility/group0/2c/71/de/d9/d5/2f/4f/4c/stm32cubeprg-lin-v2-12-0/files/stm32cubeprg-lin-v2-12-0.zip/jcr:content/translations/en.stm32cubeprg-lin-v2-12-0.zip";
-    #sha256 = "sha256-iS0dhrwCWBG2oOcYLgPosXuHCLOx1AIhQPXp4N2C/xI=";
-    sha256 = "sha256-abcdhrwCWBG2oOcYLgPosXuHCLOx1AIhQPXp4N2C/xI=";
+    sha256 = "sha256-iS0dhrwCWBG2oOcYLgPosXuHCLOx1AIhQPXp4N2C/xI=";
     stripRoot = false;
   };
 
@@ -21,7 +20,7 @@ stdenv.mkDerivation rec {
   desktopItems = [
     (makeDesktopItem {
       name = "stm32CubeProgrammer";
-      exec = "stm32cubeProgrammer";
+      exec = "STM32_Programmer_CLI";
       desktopName = "STM32CubeProgrammer";
       categories = [ "Development" ];
       comment = "STM32CubeProgrammer software for all STM32";
@@ -41,7 +40,7 @@ stdenv.mkDerivation rec {
 
       ${jdk11}/bin/java -jar $out/SetupSTM32CubeProgrammer-2.12.0.exe & 
 
-      xdotool ${xdotool_script} $out
+      xdotool ${xdotool_script} $out/build
       EOF
 
       #cp --no-preserve=mode,ownership $src/* $out -r
@@ -51,6 +50,7 @@ stdenv.mkDerivation rec {
       echo "$out : "
       ls $out -la
 
+      mkdir $out/build
 
       #xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" -w 5 $out/stm32cubeprog.xvfb
       #xvfb-run --server-args="-screen 0 1920x1080x24" --auto-servernum --print-errorlogs -w 5 $out/stm32cubeprog.xvfb
@@ -67,6 +67,8 @@ stdenv.mkDerivation rec {
       mkdir $out/screenshots
       touch empty.png
       cp *.png $out/screenshots
+
+      cp $out/build/* $out -r
 
       
       # mkdir -p $out/{bin,opt/STM32CubeProgrammer}
