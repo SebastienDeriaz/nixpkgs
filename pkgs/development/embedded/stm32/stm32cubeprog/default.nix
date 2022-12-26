@@ -5,10 +5,9 @@
 # 25.12.2022
 
 stdenv.mkDerivation rec {
-  pname = "stm32cubeprog";
+  pname = "STM32_Programmer_CLI";
   version = "2.12.0";
   xdotool_script = ./stm32cubeprog.xdotool;
-
 
   src = fetchzip {
     url = "https://www.st.com/content/ccc/resource/technical/software/utility/group0/2c/71/de/d9/d5/2f/4f/4c/stm32cubeprg-lin-v2-12-0/files/stm32cubeprg-lin-v2-12-0.zip/jcr:content/translations/en.stm32cubeprg-lin-v2-12-0.zip";
@@ -33,7 +32,6 @@ stdenv.mkDerivation rec {
       
     in
     ''
-      echo A
       mkdir -p $out
 
       cat << EOF > $out/stm32cubeprog.xvfb
@@ -43,32 +41,19 @@ stdenv.mkDerivation rec {
       xdotool ${xdotool_script} $out/build
       EOF
 
-      #cp --no-preserve=mode,ownership $src/* $out -r
       cp $src/* $out -r
       chmod +x $out/SetupSTM32CubeProgrammer-2.12.0.linux $out/stm32cubeprog.xvfb
 
-      echo "$out : "
-      ls $out -la
-
       mkdir $out/build
 
-      #xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" -w 5 $out/stm32cubeprog.xvfb
-      #xvfb-run --server-args="-screen 0 1920x1080x24" --auto-servernum --print-errorlogs -w 5 $out/stm32cubeprog.xvfb
       xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" $out/stm32cubeprog.xvfb
-
-      #export DISPLAY=:0.0
-      #ls $out -la
-      #exec $out/SetupSTM32CubeProgrammer-2.12.0.linux &
-
-      #import -window root A.png
-
-      #xdotool ${xdotool_script} $out
 
       mkdir $out/screenshots
       touch empty.png
       cp *.png $out/screenshots
 
       cp $out/build/* $out -r
+      chmod u+x $out/bin/STM32_Programmer_CLI
 
       
       # mkdir -p $out/{bin,opt/STM32CubeProgrammer}
