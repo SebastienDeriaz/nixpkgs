@@ -1,16 +1,14 @@
-{ lib, stdenv, makeDesktopItem, copyDesktopItems, icoutils, fdupes, imagemagick, jdk11, fetchzip, xdotool, pkgs ? import <nixpkgs> {}}:
+{ config, lib, stdenv, makeDesktopItem, copyDesktopItems, icoutils, fdupes, imagemagick, jdk11, fetchzip, xdotool, xvfb-run, xeyes, pkgs ? import <nixpkgs> {}}:
 
 # Heavily inspired by https://github.com/NixOS/nixpkgs/blob/nixos-22.11/pkgs/development/embedded/stm32/stm32cubemx/default.nix
+# https://github.com/SebastienDeriaz
+# 25.12.2022
 
 stdenv.mkDerivation rec {
   pname = "stm32cubeprog";
   version = "2.12.0";
   xdotool_script = ./stm32cubeprog.xdotool;
-  xvfb_script    = ./stm32cubeprog.xvfb
 
-  #nodes.machine = { pkgs, ... }: {                                            
-  #  environment.systemPackages = [ pkgs.hello ];
-  #};
 
   src = fetchzip {
     url = "https://www.st.com/content/ccc/resource/technical/software/utility/group0/2c/71/de/d9/d5/2f/4f/4c/stm32cubeprg-lin-v2-12-0/files/stm32cubeprg-lin-v2-12-0.zip/jcr:content/translations/en.stm32cubeprg-lin-v2-12-0.zip";
@@ -18,7 +16,7 @@ stdenv.mkDerivation rec {
     stripRoot = false;
   };
 
-  nativeBuildInputs = [ icoutils fdupes imagemagick copyDesktopItems xdotool];
+  nativeBuildInputs = [ icoutils fdupes imagemagick copyDesktopItems xdotool xvfb-run xeyes];
   desktopItems = [
     (makeDesktopItem {
       name = "stm32CubeProgrammer";
@@ -28,43 +26,47 @@ stdenv.mkDerivation rec {
       comment = "STM32CubeProgrammer software for all STM32";
       icon = "stm32cubeprog";
     })
-  ];
-
-  #machine.console.keyMap = mkOverride 900 layout;
-  #machine.services.xserver.desktopManager.xterm.enable = false;
-  #machine.services.xserver.layout = mkOverride 900 layout;
-  #machine.imports = [ ./common/x11.nix ];
-
-  
+  ]; 
 
   buildCommand = let
     iconame = "STM32CubeProgrammer";
       
     in
     ''
-      ls $src -la
-      # Start the linux installer
-      echo $src/SetupSTM32CubeProgrammer-2.12.0.linux
-      $src/SetupSTM32CubeProgrammer-2.12.0.linux &
+      echo A
+      mkdir -p $out
 
-      export DISPLAY=:0
-      # specify $srcdir/build as temporary dir
-      echo "Running xdotool"
-      echo "Saving in " $out
+      cat << EOF > $out/stm32cubeprog.xvfb
 
-      # xdotool ${xdotool_script} $out
-      xdotool --help # key --delay 100 p r e f e r e n c e s
+      ${jdk11}/bin/java -jar $out/SetupSTM32CubeProgrammer-2.12.0.exe & 
 
-      echo "A"
+      xdotool ${xdotool_script} $out
+      EOF
 
-      mkdir -p $out/bin
-      touch $out/bin/test
+      #cp --no-preserve=mode,ownership $src/* $out -r
+      cp $src/* $out -r
+      chmod +x $out/SetupSTM32CubeProgrammer-2.12.0.linux $out/stm32cubeprog.xvfb
 
-      echo "B"
+      echo "$out : "
+      ls $out -la
 
-      # ls $out -la
 
-      echo "C"
+      #xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" -w 5 $out/stm32cubeprog.xvfb
+      #xvfb-run --server-args="-screen 0 1920x1080x24" --auto-servernum --print-errorlogs -w 5 $out/stm32cubeprog.xvfb
+      xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" $out/stm32cubeprog.xvfb
+
+      #export DISPLAY=:0.0
+      #ls $out -la
+      #exec $out/SetupSTM32CubeProgrammer-2.12.0.linux &
+
+      #import -window root A.png
+
+      #xdotool ${xdotool_script} $out
+
+      mkdir $out/screenshots
+      touch empty.png
+      cp *.png $out/screenshots
+
       
       # mkdir -p $out/{bin,opt/STM32CubeProgrammer}
       # cp -r $src/MX/. $out/opt/STM32CubeProgrammer/

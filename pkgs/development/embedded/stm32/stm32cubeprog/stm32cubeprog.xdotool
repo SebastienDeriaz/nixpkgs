@@ -2,73 +2,157 @@
 # Edited by https://github.com/SebastienDeriaz
 # On 25.12.2022
 
+# NOTES
+#
+# The top bar doesn't exist in the xvfb environment. Therefore all coordinates must be shifted
+# A screenshot can be taken anytime by running :
+#   exec import -window root xxx.png
+# The exact position can then be determined using gimp
+
 
 # Wait for STM32CubeProg Window Open
 exec echo "Starting xdotool script"
 sleep 5
 
+exec import -windows root A.png
+
+
+
 # Click Next
 search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync
 mousemove 1456 992 click 1 
 
+sleep 0.2
+exec import -windows root A.png
+sleep 0.2
+
 # Click Next
 search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync 
-mousemove 1456 992 click 1 
+mousemove 1456 992 click 1
+
+sleep 0.2
+exec import -windows root B.png
+
+sleep 0.5
 
 # Accept License agreement
 search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync 
-mousemove 1122 912 click 1 
+mousemove 1122 912 click 1
+
+sleep 0.2
+exec import -windows root C.png
+sleep 0.2
 
 # Click Next
 search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync 
 mousemove 1456 992 click  1 
 
+sleep 0.2
+exec import -windows root D.png
+
+sleep 2
+
 # Accept Terms of Use
 search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync 
-mousemove 1122 662 click 1
+mousemove 1124 627 click 1
+
+sleep 0.2
+exec import -windows root E.png
+sleep 0.2
 
 # Click next
 search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync 
 mousemove 1456 992 click  1
 
+sleep 0.2
+exec import -windows root F.png
+sleep 0.2
+
 # Set Path of Installation
 search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus -sync 
-# Open "browse"
-mousemove 1534 682 click 1
-# input the path of pkgdir
+# Click on browse
+mousemove 1541 657 click 1
+sleep 0.2
+exec import -windows root G.png
+sleep 0.2
+
+# Write the new path
+sleep 0.2
 type $1
-# Click save
-mousemove 1472 846 click 1
+sleep 0.2
+exec echo "Install STM32CubeProgrammer at :"
+exec echo $1
+
+
+sleep 0.2
+exec import -windows root H.png
+sleep 0.2
+
+# Click Ok
+mousemove 1514 847 click 1
+
+sleep 0.2
+exec import -windows root I.png
+sleep 0.2
 
 # Click Next
 search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync 
 mousemove 1456 992 click  1
 
+sleep 0.2
+exec import -windows root J.png
+sleep 0.2
+
 # Click Next
 search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync 
 mousemove 1456 992 click  1
+
+sleep 0.2
+exec import -windows root K.png
+sleep 0.2
 
 # Installation, wait (not sure about the timing)
 sleep 20
 
+sleep 0.2
+exec import -windows root L.png
+sleep 0.2
+
 
 # Click Next
 search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync 
 mousemove 1456 992 click  1 
+
+sleep 0.2
+exec import -windows root M.png
+sleep 0.2
 
 # Cancel Create shortcuts in the Start-Menu
 search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync 
-#mousemove 1181 683 click  1 
-mousemove 1164 701 click 1
+mousemove 1172 671 click 1
+
+sleep 0.2
+exec import -windows root N.png
+sleep 0.2
+
 
 # Cancel Create additional shortcus on the desktop
 search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync 
-#mousemove 1181 705 click  1 
-mousemove 1163 727 click 1
+mousemove 1172 696 click 1
+
+sleep 0.2
+exec import -windows root O.png
+sleep 0.2
+
 
 # Click Next
 search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync 
 mousemove 1456 992 click  1 
+
+sleep 0.2
+exec import -windows root P.png
+sleep 0.2
+
 
 # Click Done
 search --name "STM32CubeProgrammer Installation Wizard" windowmove --sync 960 540   windowfocus --sync 
