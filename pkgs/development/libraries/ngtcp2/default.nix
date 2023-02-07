@@ -7,20 +7,20 @@
 
 stdenv.mkDerivation rec {
   pname = "ngtcp2";
-  version = "0.11.0";
+  version = "0.13.0";
 
   src = fetchFromGitHub {
     owner = "ngtcp2";
     repo = pname;
     rev = "v${version}";
-    sha256 = "sha256-u6orYF/VzXpcUdCitPawoet3KAhXlTQ2giR5eTQkrLY=";
+    sha256 = "sha256-rKEF5R1GubgFiblmdTqh26PxTRxIqXUJHxj0Qwd3N00=";
   };
 
   outputs = [ "out" "dev" "doc" ];
 
   nativeBuildInputs = [ cmake ];
   buildInputs = [ libev nghttp3 quictls ] ++ lib.optional withJemalloc jemalloc;
-  checkInputs = [ cunit ncurses ];
+  nativeCheckInputs = [ cunit ncurses ];
 
   cmakeFlags = [
     "-DENABLE_STATIC_LIB=OFF"
